@@ -1,0 +1,2 @@
+threshold_buy: 0.6303699396548021
+threshold_sell: 0.27377273042515315

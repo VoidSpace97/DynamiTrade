@@ -1,0 +1,16 @@
+pandas>=1.5
+numpy>=1.21
+PyYAML>=6.0
+ccxt>=4.0
+SQLAlchemy>=1.4
+psycopg2-binary>=2.9
+streamlit>=1.18
+lightgbm>=3.3
+optuna>=3.0
+ta>=0.10
+loguru>=0.7
+matplotlib>=3.5
+seaborn>=0.11
+plotly>=5.13
+streamlit-autorefresh>=0.1
+scikit-learn>=1.1

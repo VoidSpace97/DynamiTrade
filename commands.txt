@@ -1,0 +1,106 @@
+────────────────────────────────────────────────────
+COMMAND REFERENCE — ALGORITHMIC TRADING SYSTEM v2.0
+────────────────────────────────────────────────────
+
+0. Feature Store Builder — build_feature_store.py
+Command:
+python build_feature_store.py               # Historical backfill
+python build_feature_store.py --realtime   # Continuous realtime ingestion
+
+Outputs:
+- data/ohlcv_data.parquet                   # Raw OHLCV
+- data/feature_store.parquet                # Engineered features (multi-timeframe)
+- stdout log prints                         # Row counts, merge status, export path
+
+────────────────────────────────────────────────────
+
+1. Model Tuning — model_tuning.py
+Command:
+python model_tuning.py --study_name <study_name> --n_trials <number_of_trials>
+
+Outputs:
+optuna_experiments/<study_name>/
+├── pruned_model.txt
+├── top_features.txt
+├── best_trial.txt
+├── optuna_trials.csv
+├── optuna_history.png
+├── checkpoint_<N>/
+│   └── backtest_report.csv
+│   └── report_metrics.json
+│   └── equity_curve.png, etc.
+
+────────────────────────────────────────────────────
+
+2. Backtesting — backtest_engine.py
+Command:
+python backtest_engine.py --study_name <study_name>
+
+Outputs:
+csv/backtest_<study_name>_<timestamp>/
+├── *_trades.csv
+├── backtest_report.csv
+├── report_metrics.json
+├── *.png (PnL, Sharpe, drawdown, gross vs net)
+
+────────────────────────────────────────────────────
+
+3. Inference — inference.py
+Command:
+python inference.py --run_id <run_id> --study_name <study_name> --mode batch
+python inference.py --run_id <run_id> --study_name <study_name> --mode realtime
+
+Outputs:
+csv/<run_id>/predictions.csv
+csv/<run_id>/metadata.txt
+(Realtime loop appends predictions continuously)
+
+────────────────────────────────────────────────────
+
+4. Trading Engine — trading_engine.py
+Command:
+python trading_engine.py --run_id <run_id> --study_name <study_name>
+
+Outputs:
+csv/<run_id>/paper_trades.csv
+logs/<run_id>_trading.log
+
+Dynamic thresholding + TP/SL monitoring in loop.
+
+────────────────────────────────────────────────────
+
+5. Full Session Orchestration — start_session.py
+Command:
+python start_session.py --study_name <study_name>
+
+Subprocesses launched:
+- Realtime ingestion
+- Inference
+- Trading Engine
+
+All logs saved under `logs/`  
+All predictions and trades saved under `csv/<run_id>/`
+
+────────────────────────────────────────────────────
+
+6. Dashboard — dashboard.py
+Command:
+streamlit run dashboard.py
+
+Features:
+- Optuna study trials
+- Equity curves, trade history
+- JSON report metrics
+- Checkpoint backtests and comparisons
+
+────────────────────────────────────────────────────
+
+SQL Table Schema (if used externally):
+CREATE TABLE btc_data (
+    timestamp TIMESTAMPTZ PRIMARY KEY,
+    open NUMERIC,
+    high NUMERIC,
+    low NUMERIC,
+    close NUMERIC,
+    volume NUMERIC
+);

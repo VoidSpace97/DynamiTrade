@@ -1,0 +1,34 @@
+# Environment mode: 'paper' (simulation), 'testnet' (sandbox), 'live' (real trading)
+env: testnet
+
+# Binance API credentials
+binance:
+  mainnet:
+    api_key: ""       # Production API Key
+    api_secret: ""    # Production Secret
+  testnet:
+    api_key: ""       # Testnet API Key
+    api_secret: ""    # Testnet Secret
+
+# Optional: PostgreSQL database (not actively used, uses Parquet by default)
+database-local:
+  host: ""
+  port: 
+  user: ""
+  password: ""
+  name: ""
+
+# Model configuration
+model:
+  target_symbol: "BTC/USDC"   # Trading pair
+  features:
+    ohlcv_window: 2500        # Historical window for features
+
+# Trading parameters
+trading:
+  initial_usdc: 100           # Initial capital for paper mode
+  initial_sol: 0              # Initial SOL position (if trading SOL pairs)
+  risk_percentage: 0.10       # Risk per trade (e.g., 10% of portfolio)
+  fee_percent: 0.2            # Simulated fee rate (%)
+  take_profit_pct: 3.0        # Take profit target (%)
+  stop_loss_pct: 1.5          # Stop loss threshold (%)

@@ -1,0 +1,19 @@
+env: testnet  # Opzioni: 'paper', 'testnet', 'live'
+
+binance:
+  mainnet:
+    api_key: ""
+    api_secret: ""
+  testnet:
+    api_key: ""
+    api_secret: ""
+  pair: "SOLUSDT"
+
+paths:
+  unified:
+    base: data/dataset_1m.parquet
+
+model:
+  target_symbol: "SOLUSDT"
+  features:
+    ohlcv_window: 1500
